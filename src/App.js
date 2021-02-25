@@ -12,24 +12,15 @@ class App extends React.Component {
     bad: 0,
   };
 
-  incrementGoodFeedback = () => {
+  incrementFeedback = option => {
     this.setState(prevState => {
-      return { good: prevState.good + 1 };
-    });
-  };
-  incrementNeutralFeedback = () => {
-    this.setState(prevState => {
-      return { neutral: prevState.neutral + 1 };
-    });
-  };
-  incrementBadFeedback = () => {
-    this.setState(prevState => {
-      return { bad: prevState.bad + 1 };
+      return { [option]: prevState[option] + 1 };
     });
   };
 
   render() {
     const { bad, good, neutral } = this.state;
+    const options = Object.keys(this.state);
 
     const total = bad + good + neutral;
 
@@ -41,19 +32,13 @@ class App extends React.Component {
       <Section>
         <Titel titel="Please leave feedback" />
 
-        <FeedbackOptions
-          option="good"
-          onLeaveFeedback={this.incrementGoodFeedback}
-        />
-        <FeedbackOptions
-          option="neutral"
-          onLeaveFeedback={this.incrementNeutralFeedback}
-        />
-        <FeedbackOptions
-          option="bad"
-          onLeaveFeedback={this.incrementBadFeedback}
-        />
-
+        {options.map(item => (
+          <FeedbackOptions
+            key={item}
+            option={item}
+            onLeaveFeedback={this.incrementFeedback}
+          />
+        ))}
         <Statistics
           good={good}
           bad={bad}
